@@ -73,6 +73,18 @@ Boolean to control merges of all found instances of types::services in Hiera. Th
 
 - *Default*: true
 
+yumrepos
+--------
+Hash of resource type `yumrepo`.
+
+- *Default*: undef
+
+yumrepos_hiera_merge
+--------------------
+Boolean to control merges of all found instances of types::yumrepos in Hiera. This is useful for specifying file resources at different levels of the hierarchy and having them all included in the catalog.
+
+- *Default*: true
+
 ===
 
 # Defines
@@ -240,4 +252,14 @@ types::services:
   tailored_firewalls:
     ensure: 'true'
     enable: 'true'
+</pre>
+
+## yumrepo
+<pre>
+types::yumrepos:
+  customrepo:
+    baseurl: 'http://host.domain.tld/yum/'
+    enabled: '1'
+    gpgcheck: '1'
+    gpgkey: 'http://host.domain.tld/RPM-KEY'
 </pre>

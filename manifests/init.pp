@@ -7,10 +7,12 @@ class types (
   $files                = undef,
   $mounts               = undef,
   $services             = undef,
+  $yumrepos             = undef,
   $crons_hiera_merge    = false,
   $files_hiera_merge    = false,
   $mounts_hiera_merge   = false,
   $services_hiera_merge = true,
+  $yumrepos_hiera_merge = true,
 ) {
 
   if type($crons_hiera_merge) == 'string' {
@@ -40,6 +42,13 @@ class types (
     $services_hiera_merge_real = $services_hiera_merge
   }
   validate_bool($services_hiera_merge_real)
+
+  if type($yumrepos_hiera_merge) == 'string' {
+    $yumrepos_hiera_merge_real = str2bool($yumrepos_hiera_merge)
+  } else {
+    $yumrepos_hiera_merge_real = $yumrepos_hiera_merge
+  }
+  validate_bool($yumrepos_hiera_merge_real)
 
   if $crons != undef {
     if $crons_hiera_merge_real == true {
@@ -79,5 +88,15 @@ class types (
     }
     validate_hash($services_real)
     create_resources('types::service',$services_real)
+  }
+
+  if $yumrepos != undef {
+    if $yumrepos_hiera_merge_real == true {
+      $yumrepos_real = hiera_hash('types::yumrepos')
+    } else {
+      $yumrepos_real = $yumrepos
+    }
+    validate_hash($yumrepos_real)
+    create_resources('types::yumrepo',$yumrepos_real)
   }
 }
